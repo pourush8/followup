@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>followUp - Tasks</title>
+    <link rel="stylesheet" href="../styles/task.css">
+</head>
+<body>
+    <header>
+        <div class="branding"><a href="../index.html">followUp</a></div>
+        <div class="user-profile">
+            <img src="https://lh3.googleusercontent.com/a/ACg8ocKcbGWCPMhuBIO7dKfRcdoTU032Cxt4-pXLSDFzZ_DLHxt5FAM7yg=s288-c-no" alt="Pourush Kalra" title="Pourush Kalra">
+        </div>
+    </header>
+    <main>
+        <div class="container">
+            <nav class="process-flow">
+                <ul>
+                    <li><a href="task.html">Task</a></li>
+                    <li><a href="people.html">People</a></li>
+                    <li><a href="followup.html">followUp Scheme</a></li>
+                    <li><a href="notification-message.html">Notification Message</a></li>
+                    <li><a href="summary.html">Summary</a></li>
+                </ul>
+            </nav>
+            <div class="search-container">
+                <input type="text" placeholder="Add from 100's of integrations" class="search-input">
+            </div>
+            <div class="integration-tiles">
+                <div class="tile" id="define-manual-task">
+                    <div class="tile-icon">+</div>
+                    <div class="tile-name">Define Manual Task</div>
+                </div>
+                <div class="tile">
+                    <div class="tile-icon"><img src="https://www.gstatic.com/images/branding/product/1x/forms_48dp.png" alt="Google Forms"></div>
+                    <div class="tile-name">Google Form</div>
+                </div>
+                <div class="tile">
+                    <div class="tile-icon"><img src="https://www.sap.com/dam/application/shared/logos/sap-logo-svg.svg" alt="SAP Concur"></div>
+                    <div class="tile-name">Time Sheet Follow Up</div>
+                </div>
+                <div class="tile">
+                    <div class="tile-icon"><img src="https://logovectordl.com/wp-content/uploads/2020/11/docebo-logo-vector.png" alt="Docebo"></div>
+                    <div class="tile-name">Follow up on Training</div>
+                </div>
+                <div class="tile">
+                    <div class="tile-icon"><img src="https://img.icons8.com/color/48/000000/microsoft-forms.png" alt="Microsoft Forms"></div>
+                    <div class="tile-name">Microsoft Forms</div>
+                </div>
+                <div class="tile">
+                    <div class="tile-icon"><img src="https://wac-cdn.atlassian.com/assets/img/favicons/atlassian/favicon.png" alt="Jira Service Desk"></div>
+                    <div class="tile-name">Address Critical Incident</div>
+                </div>
+                <!-- New Webhooks Tile -->
+                <div class="tile">
+                    <div class="tile-icon"><img src="https://i.sstatic.net/S3SNU.jpg" alt="Webhooks" style="width: 48px; height: 48px;"></div>
+                    <div class="tile-name">Webhooks</div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const defineManualTask = document.getElementById('define-manual-task');
+            const popup = document.getElementById('manual-task-popup');
+            const closePopup = document.getElementById('close-popup');
+            const form = document.getElementById('manual-task-form');
+
+            defineManualTask.addEventListener('click', function() {
+                popup.style.display = 'flex';
+            });
+
+            closePopup.addEventListener('click', function() {
+                popup.style.display = 'none';
+            });
+
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const summary = document.getElementById('task-summary').value;
+                const definitionOfDone = document.querySelector('input[name="definition-of-done"]:checked').value;
+                console.log('Task created:', { summary, definitionOfDone });
+                // Here you would typically send this data to a server
+                popup.style.display = 'none';
+                form.reset();
+                // Navigate to the people page
+                window.location.href = 'people.html';
+            });
+
+            const googleFormTile = document.querySelector('.tile:nth-child(2)'); // Assuming Google Form is the second tile
+            const googleFormPopup = document.getElementById('google-form-popup');
+            const closeGoogleFormPopup = document.getElementById('close-google-form-popup');
+            const googleFormTaskForm = document.getElementById('google-form-task');
+
+            googleFormTile.addEventListener('click', function() {
+                googleFormPopup.style.display = 'flex';
+            });
+
+            closeGoogleFormPopup.addEventListener('click', function() {
+                googleFormPopup.style.display = 'none';
+            });
+
+            googleFormTaskForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const summary = document.getElementById('task-summary').value;
+                const selectedForm = document.getElementById('google-form-select').value;
+                console.log('Google Form task created:', { summary, selectedForm });
+                // Here you would typically send this data to a server
+                googleFormPopup.style.display = 'none';
+                googleFormTaskForm.reset();
+                // Navigate to the people page
+                window.location.href = 'people.html';
+            });
+        });
+    </script>
+
+    <!-- Popup for Define Manual Task -->
+    <div id="manual-task-popup" class="popup">
+        <div class="popup-content">
+            <h2>Define Manual Task</h2>
+            <form id="manual-task-form">
+                <div class="form-group">
+                    <label for="task-summary">Task Summary</label>
+                    <input type="text" id="task-summary" name="task-summary" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Definition of Done</label>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="definition-of-done" value="user-confirmation" required>
+                            <span>User confirms completion</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="definition-of-done" value="system-tracking" required>
+                            <span>System tracks completion</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="button-group">
+                    <button type="button" class="btn-secondary" id="close-popup">Cancel</button>
+                    <button type="submit" class="btn-primary">Create Task</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="google-form-popup" class="popup">
+        <div class="popup-content">
+            <h2>Create Google Form Follow-up</h2>
+            <form id="google-form-task">
+                <div class="form-group">
+                    <label for="task-summary">Task Summary</label>
+                    <input type="text" id="task-summary" name="task-summary" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="google-form-select">Select Google Form</label>
+                    <select id="google-form-select" name="google-form-select" required>
+                        <option value="">Choose a form</option>
+                        <option value="employee-feedback">Employee Feedback Survey</option>
+                        <option value="training-evaluation">Training Evaluation Form</option>
+                        <option value="it-support-request">IT Support Request Form</option>
+                        <option value="expense-report">Expense Report Submission</option>
+                        <option value="leave-request">Leave Request Form</option>
+                        <option value="performance-review">Performance Review Self-Assessment</option>
+                        <option value="onboarding-checklist">New Employee Onboarding Checklist</option>
+                        <option value="project-status">Project Status Update Form</option>
+                    </select>
+                </div>
+                
+                <div class="button-group">
+                    <button type="button" class="btn-secondary" id="close-google-form-popup">Cancel</button>
+                    <button type="submit" class="btn-primary">Create Task</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
