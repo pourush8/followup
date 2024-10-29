@@ -8,23 +8,98 @@
 </head>
 <body>
     <header>
-        <nav class="navbar">
-            <div class="branding">
-                <a href="index.html">followUp</a>
-            </div>
-            <div class="user-profile">
-                <img src="https://lh3.googleusercontent.com/a/ACg8ocKcbGWCPMhuBIO7dKfRcdoTU032Cxt4-pXLSDFzZ_DLHxt5FAM7yg=s288-c-no" alt="User Profile" />
-            </div>
-        </nav>
+        <div class="branding"><a href="index.html">followUp</a></div>
+        <div class="user-profile">
+            <img src="https://lh3.googleusercontent.com/a/ACg8ocKcbGWCPMhuBIO7dKfRcdoTU032Cxt4-pXLSDFzZ_DLHxt5FAM7yg=s288-c-no" alt="Pourush Kalra" title="Pourush Kalra">
+        </div>
     </header>
-    
+
+    <div class="carousel-container">
+        <div class="carousel">
+            <div class="carousel-slide active">
+                <div class="carousel-content">
+                    <h2>Address High Severity Incidents with Ease</h2>
+                    <p>Streamline your incident management process and respond faster to critical issues</p>
+                </div>
+            </div>
+            <div class="carousel-slide">
+                <div class="carousel-content">
+                    <h2>Automate Your Follow-ups</h2>
+                    <p>Save hours each week by eliminating manual email follow-ups and reminders</p>
+                </div>
+            </div>
+            <div class="carousel-slide">
+                <div class="carousel-content">
+                    <h2>Stay On Top of Your Tasks</h2>
+                    <p>Keep your team organized and focused with smart task management</p>
+                </div>
+            </div>
+            <button class="carousel-button prev">&#10094;</button>
+            <button class="carousel-button next">&#10095;</button>
+            <div class="carousel-dots"></div>
+        </div>
+    </div>
+
     <main class="container">
         <div class="content">
-            <h1>What needs to be done</h1>
+            <h1>What needs to be done?</h1>
             <h2>Ready to streamline your follow-ups?</h2>
-            <p>Start using followUp today and never miss an important task again.</p>
-            <a href="pages/task.html" class="cta-button">Get Started</a>
+            <p>Start using followUp today and never miss an important task again. Our intelligent system helps you stay on top of your priorities and manage follow-ups efficiently.</p>
+            <a href="pages/task.html" class="cta-button">Create Follow Up</a>
         </div>
     </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const backgrounds = [
+                'url("https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&q=80")',
+                'url("https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80")',
+                'url("https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80")'
+            ];
+            
+            let currentSlide = 0;
+            const slides = document.querySelectorAll('.carousel-slide');
+            const dotsContainer = document.querySelector('.carousel-dots');
+            
+            // Create dots
+            slides.forEach((_, idx) => {
+                const dot = document.createElement('span');
+                dot.classList.add('dot');
+                if (idx === 0) dot.classList.add('active');
+                dot.addEventListener('click', () => goToSlide(idx));
+                dotsContainer.appendChild(dot);
+            });
+
+            function updateSlides(newSlide) {
+                // Update slides
+                slides.forEach(slide => slide.classList.remove('active'));
+                slides[newSlide].classList.add('active');
+                
+                // Update background
+                document.body.style.background = backgrounds[newSlide];
+                document.body.style.backgroundSize = 'cover';
+                document.body.style.backgroundPosition = 'center';
+                
+                // Update dots
+                document.querySelectorAll('.dot').forEach((dot, idx) => {
+                    dot.classList.toggle('active', idx === newSlide);
+                });
+            }
+
+            function goToSlide(n) {
+                currentSlide = (n + slides.length) % slides.length;
+                updateSlides(currentSlide);
+            }
+
+            document.querySelector('.prev').addEventListener('click', () => goToSlide(currentSlide - 1));
+            document.querySelector('.next').addEventListener('click', () => goToSlide(currentSlide + 1));
+
+            // Auto-advance slides every 5 seconds
+            setInterval(() => goToSlide(currentSlide + 1), 5000);
+            
+            // Initialize first background
+            updateSlides(0);
+        });
+    </script>
 </body>
 </html>
