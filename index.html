@@ -18,21 +18,24 @@
         <div class="carousel">
             <div class="carousel-slide active">
                 <div class="carousel-content">
-                    <h2>Address High Severity Incidents with Ease</h2>
-                    <p>Streamline your incident management process and respond faster to critical issues</p>
+                    <h2>Address Critical Incidents with Ease</h2>
+                    <p>Streamline your incident management process and respond faster to critical issues.</p>
                 </div>
+                <img src="https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDF8fGluY2lkZW50JTIwbWFuYWdlbWVudHxlbnwwfHx8fDE2ODI3MjY0Mjg&ixlib=rb-4.0.3&q=80&w=1080" alt="Critical Incidents">
             </div>
             <div class="carousel-slide">
                 <div class="carousel-content">
                     <h2>Automate Your Follow-ups</h2>
-                    <p>Save hours each week by eliminating manual email follow-ups and reminders</p>
+                    <p>Save time and reduce manual effort by automating your follow-up processes.</p>
                 </div>
+                <img src="https://clockify.me/assets/images/productivity-statistics-cover-2023.png" alt="Automate Follow-ups">
             </div>
             <div class="carousel-slide">
                 <div class="carousel-content">
-                    <h2>Stay On Top of Your Tasks</h2>
-                    <p>Keep your team organized and focused with smart task management</p>
+                    <h2>Stay Organized and Efficient</h2>
+                    <p>Keep your tasks and priorities in check with our intuitive management system.</p>
                 </div>
+                <img src="https://atlassianblog.wpengine.com/wp-content/uploads/2023/03/1231_atlassian_10-ways-to-boost-your-productivity-at-work_1120x545@2x-1560x760.jpg" alt="Stay Organized">
             </div>
             <button class="carousel-button prev">&#10094;</button>
             <button class="carousel-button next">&#10095;</button>
@@ -51,54 +54,34 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const backgrounds = [
-                'url("https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&q=80")',
-                'url("https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80")',
-                'url("https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80")'
-            ];
-            
             let currentSlide = 0;
             const slides = document.querySelectorAll('.carousel-slide');
-            const dotsContainer = document.querySelector('.carousel-dots');
-            
-            // Create dots
-            slides.forEach((_, idx) => {
-                const dot = document.createElement('span');
-                dot.classList.add('dot');
-                if (idx === 0) dot.classList.add('active');
-                dot.addEventListener('click', () => goToSlide(idx));
-                dotsContainer.appendChild(dot);
-            });
+            const totalSlides = slides.length;
 
-            function updateSlides(newSlide) {
-                // Update slides
-                slides.forEach(slide => slide.classList.remove('active'));
-                slides[newSlide].classList.add('active');
-                
-                // Update background
-                document.body.style.background = backgrounds[newSlide];
-                document.body.style.backgroundSize = 'cover';
-                document.body.style.backgroundPosition = 'center';
-                
-                // Update dots
-                document.querySelectorAll('.dot').forEach((dot, idx) => {
-                    dot.classList.toggle('active', idx === newSlide);
+            function showSlide(index) {
+                slides.forEach((slide, i) => {
+                    slide.style.opacity = (i === index) ? '1' : '0';
                 });
             }
 
-            function goToSlide(n) {
-                currentSlide = (n + slides.length) % slides.length;
-                updateSlides(currentSlide);
+            function nextSlide() {
+                currentSlide = (currentSlide + 1) % totalSlides;
+                showSlide(currentSlide);
             }
 
-            document.querySelector('.prev').addEventListener('click', () => goToSlide(currentSlide - 1));
-            document.querySelector('.next').addEventListener('click', () => goToSlide(currentSlide + 1));
+            function prevSlide() {
+                currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+                showSlide(currentSlide);
+            }
 
-            // Auto-advance slides every 5 seconds
-            setInterval(() => goToSlide(currentSlide + 1), 5000);
+            document.querySelector('.next').addEventListener('click', nextSlide);
+            document.querySelector('.prev').addEventListener('click', prevSlide);
+
+            // Show the first slide
+            showSlide(currentSlide);
             
-            // Initialize first background
-            updateSlides(0);
+            // Auto-advance slides every 5 seconds
+            setInterval(nextSlide, 5000);
         });
     </script>
 </body>

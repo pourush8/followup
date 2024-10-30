@@ -1,22 +1,7 @@
 body {
     font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
     margin: 0;
-    padding: 0;
-    min-height: 100vh;
-    transition: background 0.5s ease-in-out;
-    position: relative;
-}
-
-/* Add a dark overlay to the body */
-body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.6);
-    z-index: 1;
 }
 
 header {
@@ -26,8 +11,7 @@ header {
     padding: 20px;
     background-color: #fff;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    position: relative;
-    z-index: 2;
+    margin-bottom: 0;
 }
 
 .branding {
@@ -49,64 +33,17 @@ header {
     border: none;
 }
 
-/* Carousel styles */
-.carousel-container {
-    position: relative;
-    z-index: 2;
-    padding: 60px 20px;
-    margin-bottom: 40px;
-}
-
-.carousel {
-    max-width: 1200px;
-    margin: 0 auto;
-    position: relative;
-}
-
-.carousel-slide {
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out;
-    position: absolute;
-    width: 100%;
-}
-
-.carousel-slide.active {
-    opacity: 1;
-}
-
-.carousel-content {
-    text-align: center;
-    color: white;
-    padding: 20px;
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 10px;
-    backdrop-filter: blur(5px);
-}
-
-.carousel-content h2 {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-}
-
-.carousel-content p {
-    font-size: 1.25rem;
-    max-width: 600px;
-    margin: 0 auto;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-}
-
 /* Main container styles */
 .container {
     position: relative;
     z-index: 2;
     padding: 20px;
-    margin-top: 120px;
+    margin-top: 300px;
 }
 
 .content {
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
     padding: 40px;
     border-radius: 10px;
     max-width: 600px;
@@ -154,7 +91,7 @@ header {
 .carousel-button {
     position: absolute;
     top: 50%;
-    transform: translateY(-50%);
+    transform: translate(0%, 200px);
     background: rgba(255, 255, 255, 0.9);
     border: none;
     width: 44px;
@@ -170,8 +107,8 @@ header {
 .carousel-dots {
     display: flex;
     justify-content: center;
-    gap: 10px;
-    margin-top: 20px;
+    gap: 100px;
+    /* margin-top: 200px; */
 }
 
 .dot {
@@ -184,4 +121,62 @@ header {
 
 .dot.active {
     background: white;
+}
+
+
+.carousel-container {
+    position: relative;
+    z-index: 2;
+    padding: 0; /* Remove padding for a full-width effect */
+    margin: 0; /* Remove margin to eliminate gap */
+}
+
+.carousel {
+    max-width: 100%; /* Full width */
+    margin: 0 auto; /* Center the carousel */
+}
+
+.carousel-slide {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    position: absolute;
+    width: 100%;
+    height: 400px; /* Set a fixed height for the carousel */
+    overflow: hidden; /* Prevent overflow */
+}
+
+.carousel-slide img {
+    width: 100%; /* Make images full width */
+    height: 100%; /* Make images full height */
+    object-fit: cover; /* Ensure images cover the area without distortion */
+}
+
+.carousel-slide.active {
+    opacity: 1;
+}
+
+.carousel-content {
+    text-align: center;
+    color: white;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.7); /* Darker background for better contrast */
+    border-radius: 10px;
+    backdrop-filter: blur(5px);
+    position: absolute; /* Position content absolutely within the slide */
+    top: 50%; /* Center vertically */
+    left: 50%; /* Center horizontally */
+    transform: translate(-50%, -50%); /* Adjust for centering */
+}
+
+.carousel-content h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Stronger shadow for better readability */
+}
+
+.carousel-content p {
+    font-size: 1.25rem;
+    max-width: 600px;
+    margin: 0 auto;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7); /* Stronger shadow for better readability */
 }
