@@ -3,16 +3,26 @@ body {
     margin: 0;
     padding: 0;
     background-color: #f0f0f0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
-header {
+/* header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px;
+    padding: 10px 20px;
     background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    z-index: 100;
+    background: white;
+} */
 
 .branding a {
     font-size: 24px;
@@ -28,15 +38,16 @@ header {
     cursor: pointer;
 }
 
-.container {
+/* .container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 20px;
+    padding: 0 20px;
 }
 
 .process-flow {
     margin-bottom: 30px;
-}
+    margin-top: 0;
+} */
 
 .process-flow ul {
     list-style-type: none;
@@ -108,26 +119,35 @@ header {
 }
 
 .scheme-card {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    overflow: hidden;
-    cursor: pointer;
-    transition: transform 0.3s ease;
     position: relative;
-}
-
-.scheme-card:hover {
-    transform: translateY(-5px);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    background-color: white;
 }
 
 .scheme-card input[type="radio"] {
-    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 1;
 }
 
-.scheme-card input[type="radio"]:checked + .card-content {
-    background-color: #e6f2ff;
-    border: 2px solid #4285F4;
+/* Change the background of the entire card when selected */
+.scheme-card:has(input[type="radio"]:checked) {
+    background-color: #6f84fa2a;
+    border-color: #2196f3;
+    color: white;
+}
+
+/* Ensure all text within selected card is white */
+.scheme-card input[type="radio"]:checked ~ * {
+    color: white;
 }
 
 .card-content {
@@ -388,25 +408,41 @@ button {
 
 .frequency-tabs {
     display: flex;
-    margin-bottom: 15px;
+    width: 100%;
+    margin: 20px 0;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    padding: 4px;
+    gap: 4px;
 }
 
 .tab-button {
     flex: 1;
-    padding: 10px;
-    background-color: #f0f0f0;
+    padding: 12px 24px;
     border: none;
+    background: none;
     cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    color: #666;
+    transition: all 0.3s ease;
+    border-radius: 6px;
+}
+
+.tab-button:hover {
+    background-color: rgba(33, 150, 243, 0.1);
+    color: #2196f3;
 }
 
 .tab-button.active {
-    background-color: #4285F4;
+    background-color: #2196f3;
     color: white;
+    box-shadow: 0 2px 4px rgba(33, 150, 243, 0.2);
 }
 
 .frequency-tab-content {
     display: none;
-    margin-bottom: 15px;
+    padding: 20px;
 }
 
 .frequency-tab-content.active {
@@ -448,3 +484,98 @@ button {
 .weekday-selector label {
     margin-right: 10px;
 }
+
+/* Add styles for the sidebar */
+/* .sidebar {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    width: 250px;
+    height: calc(100vh - 60px);
+    background-color: #ffffff;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    padding: 24px 16px;
+    box-sizing: border-box;
+    overflow-y: auto;
+} */
+
+
+/* Add styles for the popup menu */
+.menu-options {
+    display: none; /* Initially hidden */
+    position: absolute; /* Positioning */
+    background-color: white; /* Background color */
+    border: 1px solid #ccc; /* Border */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Shadow */
+    z-index: 1000; /* Ensure it appears above other content */
+}
+
+.menu-options.active {
+    display: block; /* Show when active */
+}
+
+/* Adjust main content margin */
+main {
+    margin-left: 250px; /* Match sidebar width */
+    /* margin-top: 60px; Match header height */
+    min-height: calc(100vh - 48px);
+    background-color: #f0f0f0;
+}
+
+/* Remove the inline style from main element in HTML and add this class */
+.with-sidebar {
+    margin-left: 250px;
+}
+
+/* Layout structure */
+body {
+    margin: 0;
+    min-height: 100vh;
+}
+
+/* header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    z-index: 100;
+    background: white;
+} */
+
+/* Main content wrapper */
+.content-wrapper {
+    display: flex;
+    flex: 1;
+    padding-top: 0;
+}
+
+/* Main content area */
+main.with-sidebar {
+    flex: 1;
+    /* padding: 20px; */
+    overflow-y: auto;
+}
+
+/* Task list styles */
+/* .task-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+} */
+
+/* .task-item {
+    padding: 15px;
+    
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: white;
+} */
+
+/* Draft item style */
+/* .task-item.draft {
+    background-color: #f8f9fe;
+} */
+
+

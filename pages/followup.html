@@ -4,40 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>followUp - Scheme</title>
+    <link rel="stylesheet" href="../styles/base.css">
     <link rel="stylesheet" href="../styles/followup.css">
-    <style>
-        .popup {
-            display: none; /* Initially hidden */
-            position: fixed; /* Fixed positioning */
-            top: 50%; /* Center vertically */
-            left: 50%; /* Center horizontally */
-            transform: translate(-50%, -50%); /* Adjust for the width and height */
-            width: 90%; /* Width of the popup */
-            max-width: 600px; /* Maximum width */
-            background-color: rgba(255, 255, 255, 1); /* White background */
-            border-radius: 8px; /* Rounded corners */
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Shadow for depth */
-            z-index: 1000; /* Ensure it appears above other content */
-            border: none; /* Remove any borders */
-        }
-
-        .popup:before {
-            content: ''; /* Create a backdrop */
-            position: fixed; /* Fixed positioning */
-            top: 0; /* Cover the entire screen */
-            left: 0; /* Cover the entire screen */
-            width: 100%; /* Full width */
-            height: 100%; /* Full height */
-            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-            z-index: -1; /* Behind the popup */
-        }
-
-        .escalation-section {
-            border-top: 1px solid #ccc; /* Visual separation */
-            padding-top: 20px; /* Padding for the section */
-            margin-top: 20px; /* Margin for spacing */
-        }
-    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Include Chart.js -->
 </head>
 <body>
     <header>
@@ -46,109 +15,160 @@
             <img src="https://lh3.googleusercontent.com/a/ACg8ocKcbGWCPMhuBIO7dKfRcdoTU032Cxt4-pXLSDFzZ_DLHxt5FAM7yg=s288-c-no" alt="Pourush Kalra" title="Pourush Kalra">
         </div>
     </header>
-    <main>
-        <div class="container">
-            <nav class="process-flow">
-                <ul>
-                    <li><a href="task.html">Task</a></li>
-                    <li><a href="people.html">People</a></li>
-                    <li><a href="followup.html">followUp Scheme</a></li>
-                    <li><a href="notification-message.html">Notification Message</a></li>
-                    <li><a href="summary.html">Summary</a></li>
-                </ul>
-            </nav>
-            <div class="scheme-header">
-                <h2>Select a followUp Scheme</h2>
-                <button id="create-scheme">Create New Scheme</button>
-            </div>
-            <div class="scheme-cards">
-                <label class="scheme-card">
-                    <input type="radio" name="scheme" value="daily">
-                    <div class="card-content">
-                        <h3>Daily Reminder</h3>
-                        <p>Notification Type: Taskbar Icon Notification</p>
-                        <p>Frequency: Daily at 10 AM</p>
-                        <p>Escalation: To Manager After 3 attempts</p>
+
+    <div class="content-wrapper">
+        <div class="sidebar">
+            <h3>Tasks</h3>
+            <ul class="task-list">
+                <li class="task-item draft">
+                    Draft: Google form filing
+                </li>
+                <li class="task-item">
+                    <span>Respond on high priority ticket DEV-19283</span>
+                    <canvas id="chart1" class="progress-chart"></canvas>
+                </li>
+                <li class="task-item">
+                    <span>Announcement: Address security threat, phishing attempt on Jan 12th</span>
+                    <canvas id="chart2" class="progress-chart"></canvas>
+                    <a href="task-status.html" class="task-overlay" aria-label="View task status"></a>
+                </li>
+                <li class="task-item">
+                    <span>Fill leadership feedback form</span>
+                    <canvas id="chart3" class="progress-chart"></canvas>
+                </li>
+                <li class="task-item">
+                    <span>Survey: Vote on team outing</span>
+                    <canvas id="chart4" class="progress-chart"></canvas>
+                </li>
+                <li class="task-item">
+                    <span>MS Form: Fill entries on Capex form</span>
+                    <canvas id="chart5" class="progress-chart"></canvas>
+                </li>
+                <li class="timesheet-parent">
+                    <div class="timesheet-header">
+                        <svg class="arrow-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+                        </svg>
+                        <span>Fill Timesheet</span>
                     </div>
-                    <div class="radio-indicator"></div>
-                </label>
-                <label class="scheme-card">
-                    <input type="radio" name="scheme" value="weekly">
-                    <div class="card-content">
-                        <h3>Weekly Check-in</h3>
-                        <p>Notification Type: Email Notifications</p>
-                        <p>Frequency: Weekly, Mondays at 9 AM</p>
-                        <p>Escalation: To Manager After 2 weeks</p>
-                    </div>
-                    <div class="radio-indicator"></div>
-                </label>
-                <label class="scheme-card">
-                    <input type="radio" name="scheme" value="urgent">
-                    <div class="card-content">
-                        <h3>Urgent Tasks</h3>
-                        <p>Notification Type: Push Notifications (Teams)</p>
-                        <p>Frequency: Hourly</p>
-                        <p>Escalation: To Manager After 4 hours</p>
-                    </div>
-                    <div class="radio-indicator"></div>
-                </label>
-                <label class="scheme-card">
-                    <input type="radio" name="scheme" value="biweekly">
-                    <div class="card-content">
-                        <h3>Bi-weekly Update</h3>
-                        <p>Notification Type: Desktop Widget</p>
-                        <p>Frequency: Every Tuesday and Thursday at 2 PM</p>
-                        <p>Escalation: No</p>
-                    </div>
-                    <div class="radio-indicator"></div>
-                </label>
-                <label class="scheme-card">
-                    <input type="radio" name="scheme" value="sound_alert">
-                    <div class="card-content">
-                        <h3>Sound Alert</h3>
-                        <p>Notification Type: Sound Alerts</p>
-                        <p>Frequency: Every 3 hours</p>
-                        <p>Escalation: After 1 day</p>
-                    </div>
-                    <div class="radio-indicator"></div>
-                </label>
-                <label class="scheme-card">
-                    <input type="radio" name="scheme" value="lock_screen">
-                    <div class="card-content">
-                        <h3>Lock Screen Reminder</h3>
-                        <p>Notification Type: Lock Screen Notifications</p>
-                        <p>Frequency: Every time screen is locked</p>
-                        <p>Escalation: After 5 attempts</p>
-                    </div>
-                    <div class="radio-indicator"></div>
-                </label>
-                <label class="scheme-card disabled">
-                    <input type="radio" name="scheme" value="mobile_push" disabled>
-                    <div class="card-content">
-                        <h3>Mobile Push</h3>
-                        <p>Notification Type: SMS or App Notifications (Mobile)</p>
-                        <p>Frequency: Daily at 5 PM</p>
-                        <p>Escalation: After 2023-12-31</p>
-                    </div>
-                    <div class="radio-indicator"></div>
-                    <div class="info-icon" title="No access">i</div>
-                </label>
-                <label class="scheme-card disabled">
-                    <input type="radio" name="scheme" value="highest_severity" disabled>
-                    <div class="card-content">
-                        <h3>Highest Severity</h3>
-                        <p>Notification Type: Flash Screen</p>
-                        <p>Frequency: Instant</p>
-                    </div>
-                    <div class="radio-indicator"></div>
-                    <div class="info-icon" title="No access">i</div>
-                </label>
-            </div>
-            <div class="button-container">
-                <button id="next-button" disabled>Next</button>
-            </div>
+                    <ul class="timesheet-items">
+                        <li class="task-item">
+                            <span>Fill Timesheet - 01/16/24 - 01/31/24</span>
+                            <canvas id="timesheet1" class="progress-chart"></canvas>
+                        </li>
+                        <li class="task-item">
+                            <span>Fill Timesheet - 02/01/24 - 02/15/24</span>
+                            <canvas id="timesheet2" class="progress-chart"></canvas>
+                        </li>
+                        <li class="task-item">
+                            <span>Fill Timesheet - 02/16/24 - 02/29/24</span>
+                            <canvas id="timesheet3" class="progress-chart"></canvas>
+                        </li>
+                        <li class="task-item">
+                            <span>Fill Timesheet - 03/01/24 - 03/15/24</span>
+                            <canvas id="timesheet4" class="progress-chart"></canvas>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
         </div>
-    </main>
+
+        <main class="with-sidebar">
+            <div class="container">
+                <nav class="process-flow">
+                    <ul>
+                        <li><a href="task.html">Task</a></li>
+                        <li><a href="people.html">People</a></li>
+                        <li class="active"><a href="followup.html">followUp Scheme</a></li>
+                        <li><a href="notification-message.html">Notification Message</a></li>
+                        <li><a href="summary.html">Summary</a></li>
+                    </ul>
+                </nav>
+                <div class="scheme-header">
+                    <h2>Select a followUp Scheme</h2>
+                    <button id="create-scheme">Create New Scheme</button>
+                </div>
+                <div class="scheme-cards">
+                    <label class="scheme-card">
+                        <input type="radio" name="scheme" value="daily">
+                        <div class="card-content">
+                            <h3>Daily Reminder</h3>
+                            <p>Notification Type: Taskbar Icon Notification</p>
+                            <p>Frequency: Daily at 10 AM</p>
+                            <p>Escalation: To Manager After 3 attempts</p>
+                        </div>
+                    </label>
+                    <label class="scheme-card">
+                        <input type="radio" name="scheme" value="weekly">
+                        <div class="card-content">
+                            <h3>Weekly Check-in</h3>
+                            <p>Notification Type: Email Notifications</p>
+                            <p>Frequency: Weekly, Mondays at 9 AM</p>
+                            <p>Escalation: To Manager After 2 weeks</p>
+                        </div>
+                    </label>
+                    <label class="scheme-card">
+                        <input type="radio" name="scheme" value="urgent">
+                        <div class="card-content">
+                            <h3>Urgent Tasks</h3>
+                            <p>Notification Type: Push Notifications (Teams)</p>
+                            <p>Frequency: Hourly</p>
+                            <p>Escalation: To Manager After 4 hours</p>
+                        </div>
+                    </label>
+                    <label class="scheme-card">
+                        <input type="radio" name="scheme" value="biweekly">
+                        <div class="card-content">
+                            <h3>Bi-weekly Update</h3>
+                            <p>Notification Type: Desktop Widget</p>
+                            <p>Frequency: Every Tuesday and Thursday at 2 PM</p>
+                            <p>Escalation: No</p>
+                        </div>
+                    </label>
+                    <label class="scheme-card">
+                        <input type="radio" name="scheme" value="sound_alert">
+                        <div class="card-content">
+                            <h3>Sound Alert</h3>
+                            <p>Notification Type: Sound Alerts</p>
+                            <p>Frequency: Every 3 hours</p>
+                            <p>Escalation: After 1 day</p>
+                        </div>
+                    </label>
+                    <label class="scheme-card">
+                        <input type="radio" name="scheme" value="lock_screen">
+                        <div class="card-content">
+                            <h3>Lock Screen Reminder</h3>
+                            <p>Notification Type: Lock Screen Notifications</p>
+                            <p>Frequency: Every time screen is locked</p>
+                            <p>Escalation: After 5 attempts</p>
+                        </div>
+                    </label>
+                    <label class="scheme-card disabled">
+                        <input type="radio" name="scheme" value="mobile_push" disabled>
+                        <div class="card-content">
+                            <h3>Mobile Push</h3>
+                            <p>Notification Type: SMS or App Notifications (Mobile)</p>
+                            <p>Frequency: Daily at 5 PM</p>
+                            <p>Escalation: After 2023-12-31</p>
+                        </div>
+                        <div class="info-icon" title="No access">i</div>
+                    </label>
+                    <label class="scheme-card disabled">
+                        <input type="radio" name="scheme" value="highest_severity" disabled>
+                        <div class="card-content">
+                            <h3>Highest Severity</h3>
+                            <p>Notification Type: Flash Screen</p>
+                            <p>Frequency: Instant</p>
+                        </div>
+                        <div class="info-icon" title="No access">i</div>
+                    </label>
+                </div>
+                <div class="button-container">
+                    <button id="next-button" disabled>Next</button>
+                </div>
+            </div>
+        </main>
+    </div>
 
     <!-- Popup for Create New Scheme -->
     <div id="create-scheme-popup" class="popup" style="display: none;">
@@ -172,13 +192,30 @@
 
                 <label for="frequency">Frequency:</label>
                 <div class="frequency-tabs">
-                    <button type="button" class="tab-button active" data-tab="daily-tab">Daily</button>
+                    <button type="button" class="tab-button active" data-tab="one-time-tab">One-Time</button>
+                    <button type="button" class="tab-button" data-tab="daily-tab">Daily</button>
                     <button type="button" class="tab-button" data-tab="weekly-tab">Weekly</button>
                     <button type="button" class="tab-button" data-tab="monthly-tab">Monthly</button>
-                    <button type="button" class="tab-button" data-tab="yearly-tab">Yearly</button>
                 </div>
 
-                <div id="daily-tab" class="frequency-tab-content active">
+                <div id="one-time-tab" class="frequency-tab-content active">
+                    <h3>One-Time</h3>
+                    <div class="form-group">
+                        <label for="one-time-date">Select Date:</label>
+                        <input type="date" id="one-time-date" name="one-time-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="one-time-hour">Starts at:</label>
+                        <select name="one-time-hour" id="one-time-hour">
+                            <!-- hour options -->
+                        </select>
+                        <select name="one-time-minute">
+                            <!-- minute options -->
+                        </select>
+                    </div>
+                </div>
+
+                <div id="daily-tab" class="frequency-tab-content" style="display: none;">
                     <h3>Daily</h3>
                     <label>
                         <input type="radio" name="daily-option" value="every-day" checked> Every day
@@ -294,82 +331,7 @@
                             <option value="saturday">Saturday</option>
                             <option value="sunday">Sunday</option>
                         </select>
-                        of every <input type="number" min="1" value="1" style="width: 50px;"> month(s)
                     </label>
-                    <br>
-                    <label>Starts at:</label>
-                    <select name="monthly-hour">
-                        <option value="0">12 AM</option>
-                        <option value="1">1 AM</option>
-                        <option value="2">2 AM</option>
-                        <option value="3">3 AM</option>
-                        <option value="4">4 AM</option>
-                        <option value="5">5 AM</option>
-                        <option value="6">6 AM</option>
-                        <option value="7">7 AM</option>
-                        <option value="8">8 AM</option>
-                        <option value="9">9 AM</option>
-                        <option value="10">10 AM</option>
-                        <option value="11">11 AM</option>
-                        <option value="12">12 PM</option>
-                        <option value="13">1 PM</option>
-                        <option value="14">2 PM</option>
-                        <option value="15">3 PM</option>
-                        <option value="16">4 PM</option>
-                        <option value="17">5 PM</option>
-                        <option value="18">6 PM</option>
-                        <option value="19">7 PM</option>
-                        <option value="20">8 PM</option>
-                        <option value="21">9 PM</option>
-                        <option value="22">10 PM</option>
-                        <option value="23">11 PM</option>
-                    </select>
-                    <select name="monthly-minute">
-                        <option value="0">00</option>
-                        <option value="15">15</option>
-                        <option value="30">30</option>
-                        <option value="45">45</option>
-                    </select>
-                </div>
-
-                <div id="yearly-tab" class="frequency-tab-content" style="display: none;">
-                    <h3>Yearly</h3>
-                    <label>On:</label>
-                    <input type="date" name="yearly-date">
-                    <br>
-                    <label>Starts at:</label>
-                    <select name="yearly-hour">
-                        <option value="0">12 AM</option>
-                        <option value="1">1 AM</option>
-                        <option value="2">2 AM</option>
-                        <option value="3">3 AM</option>
-                        <option value="4">4 AM</option>
-                        <option value="5">5 AM</option>
-                        <option value="6">6 AM</option>
-                        <option value="7">7 AM</option>
-                        <option value="8">8 AM</option>
-                        <option value="9">9 AM</option>
-                        <option value="10">10 AM</option>
-                        <option value="11">11 AM</option>
-                        <option value="12">12 PM</option>
-                        <option value="13">1 PM</option>
-                        <option value="14">2 PM</option>
-                        <option value="15">3 PM</option>
-                        <option value="16">4 PM</option>
-                        <option value="17">5 PM</option>
-                        <option value="18">6 PM</option>
-                        <option value="19">7 PM</option>
-                        <option value="20">8 PM</option>
-                        <option value="21">9 PM</option>
-                        <option value="22">10 PM</option>
-                        <option value="23">11 PM</option>
-                    </select>
-                    <select name="yearly-minute">
-                        <option value="0">00</option>
-                        <option value="15">15</option>
-                        <option value="30">30</option>
-                        <option value="45">45</option>
-                    </select>
                 </div>
 
                 <div class="escalation-section">
@@ -456,26 +418,40 @@
             const nextButton = document.getElementById('next-button');
 
             function openPopup() {
-                // Reset the form and show the popup
+                // Reset the form
                 form.reset();
-                const activeTab = document.querySelector('.tab-button.active');
-                if (activeTab) {
-                    activeTab.classList.remove('active');
-                }
-                const dailyTab = document.querySelector('#daily-tab');
-                if (dailyTab) {
-                    dailyTab.style.display = 'block';
-                    dailyTab.classList.add('active');
-                }
+
+                // Get all tabs and content sections
+                const tabs = document.querySelectorAll('.tab-button');
+                const contents = document.querySelectorAll('.frequency-tab-content');
+
+                // Hide all content sections first
+                contents.forEach(content => {
+                    content.style.display = 'none';
+                    content.classList.remove('active');
+                });
+
+                // Remove active class from all tabs
+                tabs.forEach(tab => {
+                    tab.classList.remove('active');
+                });
+
+                // Show and activate One-Time tab
+                const oneTimeTab = document.getElementById('one-time-tab');
+                const oneTimeButton = document.querySelector('[data-tab="one-time-tab"]');
+                
+                oneTimeTab.style.display = 'block';
+                oneTimeTab.classList.add('active');
+                oneTimeButton.classList.add('active');
+
+                // Show the popup
                 popup.style.display = 'flex';
             }
 
-            function closePopupHandler() {
-                popup.style.display = 'none';
-            }
-
             createSchemeButton.addEventListener('click', openPopup);
-            closePopup.addEventListener('click', closePopupHandler);
+            closePopup.addEventListener('click', () => {
+                popup.style.display = 'none';
+            });
 
             const requireEscalation = document.getElementById('require-escalation');
             const escalationOptions = document.getElementById('escalation-options');
@@ -518,6 +494,147 @@
             nextButton.addEventListener('click', function() {
                 // Redirect to the escalation page
                 // window.location.href = 'escalation.html'; // Uncomment if needed
+            });
+
+            // Get all tab buttons and content
+            const tabs = document.querySelectorAll('.tab-button');
+            const contents = document.querySelectorAll('.frequency-tab-content');
+
+            // Hide all content sections except One-Time
+            contents.forEach(content => {
+                if (content.id !== 'one-time-tab') {
+                    content.style.display = 'none';
+                }
+            });
+
+            // Set One-Time tab as active
+            document.querySelector('[data-tab="one-time-tab"]').classList.add('active');
+            document.getElementById('one-time-tab').style.display = 'block';
+
+            // Tab click handlers
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    // Remove active class from all tabs
+                    tabs.forEach(t => t.classList.remove('active'));
+                    
+                    // Hide all content sections
+                    contents.forEach(content => {
+                        content.style.display = 'none';
+                    });
+
+                    // Add active class to clicked tab
+                    tab.classList.add('active');
+                    
+                    // Show corresponding content
+                    const contentId = tab.getAttribute('data-tab');
+                    document.getElementById(contentId).style.display = 'block';
+                });
+            });
+
+            // Single source of truth for all charts
+            const chartsData = [
+                { elementId: 'chart1', progress: 75 },
+                { elementId: 'chart2', progress: 50 },
+                { elementId: 'chart3', progress: 25 },
+                { elementId: 'chart4', progress: 100 },
+                { elementId: 'chart5', progress: 12 },
+                { elementId: 'timesheet1', progress: 95 },
+                { elementId: 'timesheet2', progress: 40 },
+                { elementId: 'timesheet3', progress: 0 },
+                { elementId: 'timesheet4', progress: 0 }
+            ];
+
+            // Single function to create donut charts
+            function createDonutChart(elementId, progress) {
+                const canvas = document.getElementById(elementId);
+                if (!canvas) return;
+                
+                const ctx = canvas.getContext('2d');
+                return new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        datasets: [{
+                            data: [progress, 100 - progress],
+                            backgroundColor: [
+                                '#4CAF50',
+                                '#f0f0f0'
+                            ],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        cutout: '70%',
+                        responsive: false,
+                        maintainAspectRatio: true,
+                        width: 20,
+                        height: 20,
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                enabled: false
+                            }
+                        },
+                        layout: {
+                            padding: 0
+                        },
+                        elements: {
+                            arc: {
+                                borderWidth: 0
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Initialize all charts once
+            chartsData.forEach(data => {
+                createDonutChart(data.elementId, data.progress);
+            });
+
+            // Process flow functionality
+            const processSteps = document.querySelectorAll('.process-flow li');
+            processSteps.forEach((step, index) => {
+                step.addEventListener('click', () => {
+                    processSteps.forEach(s => s.classList.remove('active'));
+                    for (let i = 0; i <= index; i++) {
+                        processSteps[i].classList.add('active');
+                    }
+                });
+            });
+
+            // Timesheet collapse functionality
+            const timesheetHeader = document.querySelector('.timesheet-header');
+            const timesheetItems = document.querySelector('.timesheet-items');
+            
+            if (timesheetHeader && timesheetItems) {
+                timesheetHeader.addEventListener('click', function() {
+                    this.classList.toggle('open');
+                    timesheetItems.classList.toggle('open');
+                });
+            }
+        });
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('active'); // Toggle sidebar visibility
+            const main = document.querySelector('main');
+            main.style.marginLeft = sidebar.classList.contains('active') ? '0' : '250px'; // Adjust main content margin
+        }
+
+        function toggleMenu(event) {
+            const menu = event.target.nextElementSibling; // Get the menu options
+            menu.classList.toggle('active'); // Toggle visibility
+        }
+
+        // Close the menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const menus = document.querySelectorAll('.menu-options');
+            menus.forEach(menu => {
+                if (!menu.contains(event.target) && !menu.previousElementSibling.contains(event.target)) {
+                    menu.classList.remove('active');
+                }
             });
         });
     </script>

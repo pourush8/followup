@@ -8,14 +8,14 @@ body {
     flex-direction: column;
 }
 
-header {
+/* header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px;
+    padding: 10px 20px;
     background-color: #fff;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
+} */
 
 .branding {
     font-size: 24px;
@@ -35,13 +35,13 @@ header {
     cursor: pointer;
 }
 
-main {
+/* main {
     flex-grow: 1;
     display: flex;
     justify-content: center;
     align-items: flex-start;
     padding-top: 50px;
-}
+} */
 
 .container {
     max-width: 1200px;
@@ -49,10 +49,10 @@ main {
     padding: 0 20px;
 }
 
-.process-flow {
+/* .process-flow {
     margin-bottom: 30px;
     padding: 10px 0;
-}
+} */
 
 .process-flow ul {
     list-style-type: none;
@@ -148,7 +148,7 @@ p {
 }
 
 .search-container {
-    margin-bottom: 30px;
+    margin-bottom: 24px;
 }
 
 .search-input {
@@ -167,9 +167,9 @@ p {
 }
 
 .tile {
-    background-color: #fff;
-    border-radius: 8px;
+    background: white;
     padding: 20px;
+    border-radius: 8px;
     text-align: center;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     transition: transform 0.3s, box-shadow 0.3s;

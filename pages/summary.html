@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>followUp - Summary</title>
+    <link rel="stylesheet" href="../styles/base.css">
     <link rel="stylesheet" href="../styles/summary.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <header>
@@ -13,7 +15,65 @@
             <img src="https://lh3.googleusercontent.com/a/ACg8ocKcbGWCPMhuBIO7dKfRcdoTU032Cxt4-pXLSDFzZ_DLHxt5FAM7yg=s288-c-no" alt="User Profile" />
         </div>
     </header>
-    <main>
+
+<!-- Replace the existing sidebar div with this -->
+<div class="sidebar">
+    <h3>Tasks</h3>
+    <ul class="task-list">
+        <li class="task-item draft">
+            Draft: Google form filing
+        </li>
+        <li class="task-item">
+            <span>Respond on high priority ticket DEV-19283</span>
+            <canvas id="chart1" class="progress-chart"></canvas>
+        </li>
+        <li class="task-item">
+            <span>Announcement: Address security threat, phishing attempt on Jan 12th</span>
+            <canvas id="chart2" class="progress-chart"></canvas>
+            <a href="task-status.html" class="task-overlay" aria-label="View task status"></a>
+        </li>
+        <li class="task-item">
+            <span>Fill leadership feedback form</span>
+            <canvas id="chart3" class="progress-chart"></canvas>
+        </li>
+        <li class="task-item">
+            <span>Survey: Vote on team outing</span>
+            <canvas id="chart4" class="progress-chart"></canvas>
+        </li>
+        <li class="task-item">
+            <span>MS Form: Fill entries on Capex form</span>
+            <canvas id="chart5" class="progress-chart"></canvas>
+        </li>
+        <li class="timesheet-parent">
+            <div class="timesheet-header">
+                <svg class="arrow-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+                </svg>
+                <span>Fill Timesheet</span>
+            </div>
+            <ul class="timesheet-items">
+                <li class="task-item">
+                    <span>Fill Timesheet - 01/16/24 - 01/31/24</span>
+                    <canvas id="timesheet1" class="progress-chart"></canvas>
+                </li>
+                <li class="task-item">
+                    <span>Fill Timesheet - 02/01/24 - 02/15/24</span>
+                    <canvas id="timesheet2" class="progress-chart"></canvas>
+                </li>
+                <li class="task-item">
+                    <span>Fill Timesheet - 02/16/24 - 02/29/24</span>
+                    <canvas id="timesheet3" class="progress-chart"></canvas>
+                </li>
+                <li class="task-item">
+                    <span>Fill Timesheet - 03/01/24 - 03/15/24</span>
+                    <canvas id="timesheet4" class="progress-chart"></canvas>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>
+
+    <main class="with-sidebar">
         <div class="container">
             <nav class="process-flow">
                 <ul>
@@ -21,7 +81,7 @@
                     <li><a href="people.html">People</a></li>
                     <li><a href="followup.html">followUp Scheme</a></li>
                     <li><a href="notification-message.html">Notification Message</a></li>
-                    <li><a href="summary.html">Summary</a></li>
+                    <li class="active"><a href="summary.html">Summary</a></li>
                 </ul>
             </nav>
             <div class="summary-content">
@@ -56,5 +116,75 @@
         </div>
     </main>
     <script src="../scripts/summary.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize progress charts with varying progress values
+            const chartData = [
+                { id: 'chart1', progress: 85 },
+                { id: 'chart2', progress: 70 },
+                { id: 'chart3', progress: 45 },
+                { id: 'chart4', progress: 90 },
+                { id: 'chart5', progress: 60 },
+                { id: 'timesheet1', progress: 95 },
+                { id: 'timesheet2', progress: 40 },
+                { id: 'timesheet3', progress: 0 },
+                { id: 'timesheet4', progress: 0 }
+            ];
+
+            chartData.forEach(data => {
+                const chart = document.getElementById(data.id);
+                if (!chart) return;
+                
+                const ctx = chart.getContext('2d');
+                new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        datasets: [{
+                            data: [data.progress, 100 - data.progress],
+                            backgroundColor: [
+                                '#4CAF50',
+                                '#f0f0f0'
+                            ],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        cutout: '70%',
+                        responsive: false,
+                        maintainAspectRatio: true,
+                        width: 20,
+                        height: 20,
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                enabled: false
+                            }
+                        },
+                        layout: {
+                            padding: 0
+                        },
+                        elements: {
+                            arc: {
+                                borderWidth: 0
+                            }
+                        }
+                    }
+                });
+            });
+
+            // Add timesheet collapse/expand functionality
+            const timesheetHeader = document.querySelector('.timesheet-header');
+            const timesheetItems = document.querySelector('.timesheet-items');
+            
+            if (timesheetHeader && timesheetItems) {
+                timesheetHeader.addEventListener('click', function() {
+                    this.classList.toggle('open');
+                    timesheetItems.classList.toggle('open');
+                });
+            }
+        });
+    </script>
 </body>
 </html>

@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>followUp - Security Announcement Status</title>
+    <link rel="stylesheet" href="../styles/base.css">
+    <link rel="stylesheet" href="../styles/task-status.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <div class="branding"><a href="../index.html">followUp</a></div>
+        <div class="user-profile">
+            <img src="https://lh3.googleusercontent.com/a/ACg8ocKcbGWCPMhuBIO7dKfRcdoTU032Cxt4-pXLSDFzZ_DLHxt5FAM7yg=s288-c-no" alt="Pourush Kalra" title="Pourush Kalra">
+        </div>
+    </header>
+
+    <div class="sidebar">
+        <h3>Tasks</h3>
+        <ul class="task-list">
+            <li class="task-item draft">
+                Draft: Google form filing
+            </li>
+            <li class="task-item">
+                <span>Respond on high priority ticket DEV-19283</span>
+                <canvas id="chart1" class="progress-chart"></canvas>
+            </li>
+            <li class="task-item">
+                <span>Announcement: Address security threat, phishing attempt on Jan 12th</span>
+                <canvas id="chart2" class="progress-chart"></canvas>
+                <a href="task-status.html" class="task-overlay" aria-label="View task status"></a>
+            </li>
+            <li class="task-item">
+                <span>Fill leadership feedback form</span>
+                <canvas id="chart3" class="progress-chart"></canvas>
+            </li>
+            <li class="task-item">
+                <span>Survey: Vote on team outing</span>
+                <canvas id="chart4" class="progress-chart"></canvas>
+            </li>
+            <li class="task-item">
+                <span>MS Form: Fill entries on Capex form</span>
+                <canvas id="chart5" class="progress-chart"></canvas>
+            </li>
+            <li class="timesheet-parent">
+                <div class="timesheet-header">
+                    <svg class="arrow-icon" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+                    </svg>
+                    <span>Fill Timesheet</span>
+                </div>
+                <ul class="timesheet-items">
+                    <li class="task-item">
+                        <span>Fill Timesheet - 01/16/24 - 01/31/24</span>
+                        <canvas id="timesheet1" class="progress-chart"></canvas>
+                    </li>
+                    <li class="task-item">
+                        <span>Fill Timesheet - 02/01/24 - 02/15/24</span>
+                        <canvas id="timesheet2" class="progress-chart"></canvas>
+                    </li>
+                    <li class="task-item">
+                        <span>Fill Timesheet - 02/16/24 - 02/29/24</span>
+                        <canvas id="timesheet3" class="progress-chart"></canvas>
+                    </li>
+                    <li class="task-item">
+                        <span>Fill Timesheet - 03/01/24 - 03/15/24</span>
+                        <canvas id="timesheet4" class="progress-chart"></canvas>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <main class="with-sidebar">
+        <div class="container">
+            <div class="page-header">
+                <h1>Security Announcement: Phishing Attempt (Jan 12th)</h1>
+                <p class="ticket-details">Status tracking for security announcement response</p>
+            </div>
+            <!-- Add after the container div opens and before status-overview -->
+            <div class="action-buttons">
+                <button class="action-btn notify">
+                    <i class="fas fa-bell"></i>
+                    Notify Now
+                </button>
+                <button class="action-btn escalate">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Escalate Now
+                </button>
+                <button class="action-btn edit-scheme">
+                    <i class="fas fa-cog"></i>
+                    Edit followUp Scheme
+                </button>
+                <button class="action-btn edit-people">
+                    <i class="fas fa-users"></i>
+                    Edit People
+                </button>
+                <button class="action-btn edit-message">
+                    <i class="fas fa-envelope"></i>
+                    Edit Notification Message
+                </button>
+                <button class="action-btn pause">
+                    <i class="fas fa-pause"></i>
+                    Pause followUp
+                </button>
+                <button class="action-btn stop">
+                    <i class="fas fa-stop"></i>
+                    Stop followUp
+                </button>
+            </div>
+            <div class="status-overview">
+                <div class="completion-chart">
+                    <canvas id="mainDonutChart"></canvas>
+                </div>
+                <div class="notification-response">
+                    <h3>Response Timeline</h3>
+                    <div class="chart-container">
+                        <canvas id="notificationChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <!-- Add after the status-overview div -->
+            <div class="filters">
+                <div class="filter-group">
+                    <label for="status-filter">Task Status:</label>
+                    <select id="status-filter">
+                        <option value="all">All</option>
+                        <option value="Completed">Completed</option>
+                        <option value="Not Completed">Not Completed</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="escalation-filter">Escalated:</label>
+                    <select id="escalation-filter">
+                        <option value="all">All</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="department-filter">Department:</label>
+                    <select id="department-filter">
+                        <option value="all">All</option>
+                        <option value="Engineering">Engineering</option>
+                        <option value="Marketing">Marketing</option>
+                        <option value="Sales">Sales</option>
+                        <option value="HR">HR</option>
+                        <option value="Finance">Finance</option>
+                    </select>
+                </div>
+            </div>
+            <div class="table-container">
+                <table id="status-table" class="status-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Department</th>
+                            <th>Status</th>
+                            <th>Notifications</th>
+                            <th>Escalation Contact</th>
+                            <th>Escalated</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+            <!-- Space for future elements -->
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Sidebar charts initialization
+            const chartData = [
+                { id: 'chart1', progress: 85 },
+                { id: 'chart2', progress: 70 },
+                { id: 'chart3', progress: 45 },
+                { id: 'chart4', progress: 90 },
+                { id: 'chart5', progress: 60 },
+                { id: 'timesheet1', progress: 95 },
+                { id: 'timesheet2', progress: 40 },
+                { id: 'timesheet3', progress: 0 },
+                { id: 'timesheet4', progress: 0 }
+            ];
+
+            // Initialize sidebar charts
+            chartData.forEach(data => {
+                const chart = document.getElementById(data.id);
+                if (!chart) return;
+                
+                const ctx = chart.getContext('2d');
+                new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        datasets: [{
+                            data: [data.progress, 100 - data.progress],
+                            backgroundColor: [
+                                '#4CAF50',
+                                '#f0f0f0'
+                            ],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        cutout: '70%',
+                        responsive: false,
+                        maintainAspectRatio: true,
+                        width: 20,
+                        height: 20,
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                enabled: false
+                            }
+                        },
+                        layout: {
+                            padding: 0
+                        },
+                        elements: {
+                            arc: {
+                                borderWidth: 0
+                            }
+                        }
+                    }
+                });
+            });
+
+            // Main completion donut chart
+            const mainDonutCtx = document.getElementById('mainDonutChart').getContext('2d');
+            new Chart(mainDonutCtx, {
+                type: 'doughnut',
+                data: {
+                    datasets: [{
+                        data: [75, 25],
+                        backgroundColor: [
+                            '#4285F4',
+                            '#E8E8E8'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    cutout: '80%',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            enabled: false
+                        }
+                    }
+                },
+                plugins: [{
+                    id: 'centerText',
+                    afterDraw: function(chart) {
+                        const width = chart.width;
+                        const height = chart.height;
+                        const ctx = chart.ctx;
+                        
+                        ctx.restore();
+                        ctx.font = '30px Arial';
+                        ctx.textBaseline = 'middle';
+                        ctx.textAlign = 'center';
+                        ctx.fillStyle = '#333';
+                        ctx.fillText('75%', width/2, height/2);
+                        ctx.font = '16px Arial';
+                        ctx.fillText('Completed', width/2, height/2 + 30);
+                        ctx.save();
+                    }
+                }]
+            });
+
+            // Notification response chart
+            const notificationCtx = document.getElementById('notificationChart').getContext('2d');
+            new Chart(notificationCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['1st Notification', '2nd Notification', '3rd Notification'],
+                    datasets: [{
+                        data: [30, 25, 20],
+                        backgroundColor: ['#4285F4', '#34A853', '#FBBC05'],
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.raw} people completed`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Number of People'
+                            },
+                            max: 35
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                maxRotation: 0,
+                                minRotation: 0,
+                                font: {
+                                    size: 12
+                                },
+                                padding: 10
+                            }
+                        }
+                    },
+                    layout: {
+                        padding: {
+                            left: 10,
+                            right: 10,
+                            top: 0,
+                            bottom: 20
+                        }
+                    }
+                }
+            });
+
+            // Generate random user data
+            function generateUsers() {
+                const departments = ['Engineering', 'Marketing', 'Sales', 'HR', 'Finance'];
+                const firstNames = ['John', 'Jane', 'Michael', 'Sarah', 'David', 'Emma', 'James', 'Emily', 'Robert', 'Lisa'];
+                const lastNames = ['Smith', 'Johnson', 'Williams', 'Brown', 'Jones', 'Garcia', 'Miller', 'Davis', 'Rodriguez', 'Martinez'];
+                
+                const users = [];
+                for (let i = 0; i < 50; i++) {
+                    const firstName = firstNames[Math.floor(Math.random() * firstNames.length)];
+                    const lastName = lastNames[Math.floor(Math.random() * lastNames.length)];
+                    const department = departments[Math.floor(Math.random() * departments.length)];
+                    const isCompleted = Math.random() < 0.75; // 75% completed
+                    const notifications = isCompleted ? Math.floor(Math.random() * 3) + 1 : 3;
+                    const isEscalated = !isCompleted && Math.random() < 0.5;
+                    
+                    users.push({
+                        name: `${firstName} ${lastName}`,
+                        department: department,
+                        status: isCompleted ? 'Completed' : 'Not Completed',
+                        notifications: notifications,
+                        escalationContact: `${firstNames[Math.floor(Math.random() * firstNames.length)]} ${lastNames[Math.floor(Math.random() * lastNames.length)]}`,
+                        escalated: isEscalated ? 'Yes' : 'No'
+                    });
+                }
+                return users;
+            }
+
+            // Populate and filter table
+            function updateTable(filters = {}) {
+                const tbody = document.querySelector('#status-table tbody');
+                const users = generateUsers();
+                
+                const filteredUsers = users.filter(user => {
+                    let matches = true;
+                    if (filters.status && filters.status !== 'all') {
+                        matches = matches && user.status === filters.status;
+                    }
+                    if (filters.escalated && filters.escalated !== 'all') {
+                        matches = matches && user.escalated === filters.escalated;
+                    }
+                    if (filters.department && filters.department !== 'all') {
+                        matches = matches && user.department === filters.department;
+                    }
+                    return matches;
+                });
+                
+                tbody.innerHTML = filteredUsers.map(user => `
+                    <tr>
+                        <td>${user.name}</td>
+                        <td>${user.department}</td>
+                        <td>${user.status}</td>
+                        <td>${user.notifications}</td>
+                        <td>${user.escalationContact}</td>
+                        <td>${user.escalated}</td>
+                    </tr>
+                `).join('');
+            }
+
+            // Initialize table and add filter listeners
+            updateTable();
+            
+            const filters = document.querySelectorAll('.filters select');
+            filters.forEach(filter => {
+                filter.addEventListener('change', () => {
+                    const filterValues = {
+                        status: document.getElementById('status-filter').value,
+                        escalated: document.getElementById('escalation-filter').value,
+                        department: document.getElementById('department-filter').value
+                    };
+                    updateTable(filterValues);
+                });
+            });
+
+            // Timesheet collapse/expand functionality
+            const timesheetHeader = document.querySelector('.timesheet-header');
+            const timesheetItems = document.querySelector('.timesheet-items');
+            
+            if (timesheetHeader && timesheetItems) {
+                timesheetHeader.addEventListener('click', function() {
+                    this.classList.toggle('open');
+                    timesheetItems.classList.toggle('open');
+                });
+            }
+
+            // Make sure the department values match exactly
+            const departments = ['Engineering', 'Marketing', 'Sales', 'HR', 'Finance'];
+
+            // Update the filter values when changed
+            document.getElementById('department-filter').addEventListener('change', function() {
+                const filterValues = {
+                    status: document.getElementById('status-filter').value,
+                    escalated: document.getElementById('escalation-filter').value,
+                    department: this.value
+                };
+                updateTable(filterValues);
+            });
+        });
+    </script>
+</body>
+</html>
+

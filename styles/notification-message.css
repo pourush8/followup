@@ -5,14 +5,14 @@ body {
     background-color: #f0f0f0;
 }
 
-header {
+/* header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px;
+    padding: 10px 20px;
     background-color: #fff;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
+} */
 
 .branding a {
     color: #4285f4;
@@ -28,13 +28,13 @@ header {
     object-fit: cover;
 }
 
-main {
+/* main {
     flex-grow: 1;
     display: flex;
     justify-content: center;
     align-items: flex-start;
     padding-top: 50px;
-}
+} */
 
 .container {
     max-width: 1200px;
@@ -42,10 +42,10 @@ main {
     padding: 0 20px;
 }
 
-.process-flow {
+/* .process-flow {
     margin-bottom: 30px;
     padding: 10px 0;
-}
+} */
 
 .process-flow ul {
     list-style-type: none;
