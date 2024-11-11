@@ -112,12 +112,11 @@ body {
 }
 
 .summary-section {
-    background: white;
-    padding: 24px;
+    background: #fff;
+    border: 1px solid #e0e0e0;
     border-radius: 8px;
-    margin-bottom: 24px;
-    border-bottom: 1px solid #e0e0e0;
-    padding-bottom: 20px;
+    padding: 20px;
+    margin-bottom: 20px;
 }
 
 .summary-section:last-child {
@@ -174,4 +173,38 @@ p {
 .btn-primary:hover {
     background-color: #3367d6;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Add these styles */
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.section-header h3 {
+    margin: 0;
+}
+
+.edit-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    color: #666;
+    transition: all 0.2s;
+}
+
+.edit-link:hover {
+    background: #f0f0f0;
+    color: #2188ff;
+}
+
+.edit-icon {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
 }

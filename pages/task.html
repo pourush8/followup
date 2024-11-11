@@ -6,6 +6,7 @@
     <title>followUp - Tasks</title>
     <link rel="stylesheet" href="../styles/base.css">
     <link rel="stylesheet" href="../styles/task.css">
+    <link rel="stylesheet" href="../styles/ai-chat.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
@@ -125,126 +126,72 @@
                     <div class="tile-name">Webhooks</div>
                 </div>
             </div>
+
+            <div class="integration-grid">
+                <!-- Your existing integration tiles -->
+            </div>
+
+            <div class="workflow-section">
+                <div class="ai-input-container">
+                    <div class="glow-border"></div>
+                    <div class="ai-prompt">
+                        <div class="ai-icon-wrapper">
+                            <span class="ai-icon">🤖</span>
+                            <span class="pulse"></span>
+                        </div>
+                        <p>AI Workflow Assistant</p>
+                    </div>
+                    <div class="input-wrapper">
+                        <textarea 
+                            id="aiInput" 
+                            placeholder="Describe your workflow and I'll create it automatically..."
+                            rows="1"
+                        ></textarea>
+                        <button id="processWorkflow">
+                            <span>Create</span>
+                            <svg viewBox="0 0 24 24" width="16" height="16">
+                                <path fill="currentColor" d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
     </main>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const defineManualTask = document.getElementById('define-manual-task');
-            const popup = document.getElementById('manual-task-popup');
-            const closePopup = document.getElementById('close-popup');
-            const form = document.getElementById('manual-task-form');
+            const aiInput = document.getElementById('aiInput');
+            const processBtn = document.getElementById('processWorkflow');
 
-            defineManualTask.addEventListener('click', function() {
-                popup.style.display = 'flex';
+            // Auto-resize textarea
+            aiInput.addEventListener('input', function() {
+                this.style.height = 'auto';
+                this.style.height = (this.scrollHeight) + 'px';
             });
 
-            closePopup.addEventListener('click', function() {
-                popup.style.display = 'none';
+            processBtn.addEventListener('click', async function() {
+                const message = aiInput.value.trim();
+                if (!message) return;
+
+                // Disable input and show loading state
+                aiInput.disabled = true;
+                processBtn.disabled = true;
+                processBtn.classList.add('loading');
+                processBtn.innerHTML = 'Processing...';
+
+                // Simulate AI processing
+                setTimeout(() => {
+                    window.location.href = 'summary.html';
+                }, 2000);
             });
 
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-                const summary = document.getElementById('task-summary').value;
-                const definitionOfDone = document.querySelector('input[name="definition-of-done"]:checked').value;
-                console.log('Task created:', { summary, definitionOfDone });
-                // Here you would typically send this data to a server
-                popup.style.display = 'none';
-                form.reset();
-                // Navigate to the people page
-                window.location.href = 'people.html';
+            // Handle Enter key
+            aiInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    processBtn.click();
+                }
             });
-
-            const googleFormTile = Array.from(document.querySelectorAll('.tile')).find(tile => tile.querySelector('.tile-name').textContent === 'Google Form');
-            const googleFormPopup = document.getElementById('google-form-popup');
-            const closeGoogleFormPopup = document.getElementById('close-google-form-popup');
-            const googleFormTaskForm = document.getElementById('google-form-task');
-
-            googleFormTile.addEventListener('click', function() {
-                googleFormPopup.style.display = 'flex';
-            });
-
-            closeGoogleFormPopup.addEventListener('click', function() {
-                googleFormPopup.style.display = 'none';
-            });
-
-            googleFormTaskForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                const summary = document.getElementById('task-summary').value;
-                const selectedForm = document.getElementById('google-form-select').value;
-                console.log('Google Form task created:', { summary, selectedForm });
-                // Here you would typically send this data to a server
-                googleFormPopup.style.display = 'none';
-                googleFormTaskForm.reset();
-                // Navigate to the people page
-                window.location.href = 'people.html';
-            });
-
-            // Initialize progress charts with varying progress values
-            const chartData = [
-                { id: 'chart1', progress: 85 },
-                { id: 'chart2', progress: 70 },
-                { id: 'chart3', progress: 45 },
-                { id: 'chart4', progress: 90 },
-                { id: 'chart5', progress: 60 },
-                { id: 'timesheet1', progress: 95 },
-                { id: 'timesheet2', progress: 40 },
-                { id: 'timesheet3', progress: 0 },
-                { id: 'timesheet4', progress: 0 }
-            ];
-
-            chartData.forEach(data => {
-                const chart = document.getElementById(data.id);
-                if (!chart) return;
-                
-                const ctx = chart.getContext('2d');
-                new Chart(ctx, {
-                    type: 'doughnut',
-                    data: {
-                        datasets: [{
-                            data: [data.progress, 100 - data.progress],
-                            backgroundColor: [
-                                '#4CAF50',
-                                '#f0f0f0'
-                            ],
-                            borderWidth: 0
-                        }]
-                    },
-                    options: {
-                        cutout: '70%',
-                        responsive: false,
-                        maintainAspectRatio: true,
-                        width: 20,
-                        height: 20,
-                        plugins: {
-                            legend: {
-                                display: false
-                            },
-                            tooltip: {
-                                enabled: false
-                            }
-                        },
-                        layout: {
-                            padding: 0
-                        },
-                        elements: {
-                            arc: {
-                                borderWidth: 0
-                            }
-                        }
-                    }
-                });
-            });
-
-            // Add timesheet collapse/expand functionality
-            const timesheetHeader = document.querySelector('.timesheet-header');
-            const timesheetItems = document.querySelector('.timesheet-items');
-            
-            if (timesheetHeader && timesheetItems) {
-                timesheetHeader.addEventListener('click', function() {
-                    this.classList.toggle('open');
-                    timesheetItems.classList.toggle('open');
-                });
-            }
         });
     </script>
 
