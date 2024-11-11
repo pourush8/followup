@@ -192,6 +192,163 @@
                     processBtn.click();
                 }
             });
+
+            // Update selectors to match the actual card elements
+            const taskCards = document.querySelectorAll('.card');
+            let currentPopup = null;
+
+            taskCards.forEach(card => {
+                const popup = card.querySelector('.popup');
+                
+                card.addEventListener('mouseenter', () => {
+                    // Hide previous popup if exists
+                    if (currentPopup && currentPopup !== popup) {
+                        currentPopup.classList.remove('show');
+                    }
+                    
+                    // Show current popup
+                    popup.classList.add('show');
+                    currentPopup = popup;
+                });
+
+                card.addEventListener('mouseleave', (e) => {
+                    // Check if we're not hovering over the popup
+                    if (popup) {
+                        const rect = popup.getBoundingClientRect();
+                        const isOverPopup = (
+                            e.clientX >= rect.left &&
+                            e.clientX <= rect.right &&
+                            e.clientY >= rect.top &&
+                            e.clientY <= rect.bottom
+                        );
+
+                        if (!isOverPopup) {
+                            popup.classList.remove('show');
+                            currentPopup = null;
+                        }
+                    }
+                });
+
+                // Handle popup mouseleave if popup exists
+                if (popup) {
+                    popup.addEventListener('mouseleave', () => {
+                        popup.classList.remove('show');
+                        currentPopup = null;
+                    });
+                }
+            });
+
+            // Close popup when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.card')) {
+                    document.querySelectorAll('.popup.show').forEach(popup => {
+                        popup.classList.remove('show');
+                    });
+                    currentPopup = null;
+                }
+            });
+
+            // Restore popup functionality
+            const tiles = document.querySelectorAll('.tile');
+            const popups = document.querySelectorAll('.popup');
+            const closeButtons = document.querySelectorAll('.btn-secondary');
+
+            // Handle tile clicks
+            tiles.forEach(tile => {
+                tile.addEventListener('click', () => {
+                    const tileId = tile.id;
+                    const correspondingPopup = document.getElementById(`${tileId}-popup`);
+                    
+                    if (correspondingPopup) {
+                        // Hide any other open popups
+                        popups.forEach(popup => popup.style.display = 'none');
+                        // Show this popup
+                        correspondingPopup.style.display = 'block';
+                    }
+                });
+            });
+
+            // Handle close buttons
+            closeButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const popup = button.closest('.popup');
+                    if (popup) {
+                        popup.style.display = 'none';
+                    }
+                });
+            });
+
+            // Close popup when clicking outside
+            window.addEventListener('click', (e) => {
+                popups.forEach(popup => {
+                    if (e.target === popup) {
+                        popup.style.display = 'none';
+                    }
+                });
+            });
+
+            // Handle form submissions
+            const forms = document.querySelectorAll('form');
+            forms.forEach(form => {
+                form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    // Handle form submission logic here
+                    const popup = form.closest('.popup');
+                    if (popup) {
+                        popup.style.display = 'none';
+                    }
+                });
+            });
+
+            // Manual Task Popup
+            const defineManualTask = document.getElementById('define-manual-task');
+            const popup = document.getElementById('manual-task-popup');
+            const closePopup = document.getElementById('close-popup');
+            const form = document.getElementById('manual-task-form');
+
+            defineManualTask.addEventListener('click', function() {
+                popup.style.display = 'flex';
+            });
+
+            closePopup.addEventListener('click', function() {
+                popup.style.display = 'none';
+            });
+
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const summary = document.getElementById('task-summary').value;
+                const definitionOfDone = document.querySelector('input[name="definition-of-done"]:checked').value;
+                console.log('Task created:', { summary, definitionOfDone });
+                popup.style.display = 'none';
+                form.reset();
+                window.location.href = 'people.html';
+            });
+
+            // Google Form Popup
+            const googleFormTile = Array.from(document.querySelectorAll('.tile')).find(tile => 
+                tile.querySelector('.tile-name').textContent === 'Google Form'
+            );
+            const googleFormPopup = document.getElementById('google-form-popup');
+            const closeGoogleFormPopup = document.getElementById('close-google-form-popup');
+            const googleFormTaskForm = document.getElementById('google-form-task');
+
+            googleFormTile.addEventListener('click', function() {
+                googleFormPopup.style.display = 'flex';
+            });
+
+            closeGoogleFormPopup.addEventListener('click', function() {
+                googleFormPopup.style.display = 'none';
+            });
+
+            googleFormTaskForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const summary = document.getElementById('task-summary').value;
+                const selectedForm = document.getElementById('google-form-select').value;
+                console.log('Google Form task created:', { summary, selectedForm });
+                googleFormPopup.style.display = 'none';
+                googleFormTaskForm.reset();
+                window.location.href = 'people.html';
+            });
         });
     </script>
 
