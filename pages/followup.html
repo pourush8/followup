@@ -92,7 +92,7 @@
                     <label class="scheme-card">
                         <input type="radio" name="scheme" value="daily">
                         <div class="card-content">
-                            <h3>Daily Reminder</h3>
+                            <h3>Daily Taskbar with Escalation</h3>
                             <p>Notification Type: Taskbar Icon Notification</p>
                             <p>Frequency: Daily at 10 AM</p>
                             <p>Escalation: To Manager After 3 attempts</p>
@@ -101,7 +101,7 @@
                     <label class="scheme-card">
                         <input type="radio" name="scheme" value="weekly">
                         <div class="card-content">
-                            <h3>Weekly Check-in</h3>
+                            <h3>Weekly Email Check-in</h3>
                             <p>Notification Type: Email Notifications</p>
                             <p>Frequency: Weekly, Mondays at 9 AM</p>
                             <p>Escalation: To Manager After 2 weeks</p>
@@ -110,7 +110,7 @@
                     <label class="scheme-card">
                         <input type="radio" name="scheme" value="urgent">
                         <div class="card-content">
-                            <h3>Urgent Tasks</h3>
+                            <h3>Urgent app Tasks - Security Threat Announcement</h3>
                             <p>Notification Type: Push Notifications (Teams)</p>
                             <p>Frequency: Hourly</p>
                             <p>Escalation: To Manager After 4 hours</p>
@@ -119,7 +119,7 @@
                     <label class="scheme-card">
                         <input type="radio" name="scheme" value="biweekly">
                         <div class="card-content">
-                            <h3>Bi-weekly Update</h3>
+                            <h3>Bi-weekly Notification w/o Escalation</h3>
                             <p>Notification Type: Desktop Widget</p>
                             <p>Frequency: Every Tuesday and Thursday at 2 PM</p>
                             <p>Escalation: No</p>
@@ -128,19 +128,19 @@
                     <label class="scheme-card">
                         <input type="radio" name="scheme" value="sound_alert">
                         <div class="card-content">
-                            <h3>Sound Alert</h3>
-                            <p>Notification Type: Sound Alerts</p>
+                            <h3>Desktop Alert for Critical Incidents</h3>
+                            <p>Notification Type: Desktop Pop-Up</p>
                             <p>Frequency: Every 3 hours</p>
-                            <p>Escalation: After 1 day</p>
+                            <p>Escalation: After 3 hours</p>
                         </div>
                     </label>
                     <label class="scheme-card">
                         <input type="radio" name="scheme" value="lock_screen">
                         <div class="card-content">
-                            <h3>Lock Screen Reminder</h3>
+                            <h3>Daily Lock Screen Reminder One Question Surevey</h3>
                             <p>Notification Type: Lock Screen Notifications</p>
-                            <p>Frequency: Every time screen is locked</p>
-                            <p>Escalation: After 5 attempts</p>
+                            <p>Frequency: Daily</p>
+                            <p>Escalation: No</p>
                         </div>
                     </label>
                     <label class="scheme-card disabled">
@@ -164,7 +164,7 @@
                     </label>
                 </div>
                 <div class="button-container">
-                    <button id="next-button" disabled>Next</button>
+                    <button id="next-button" disabled onclick="window.location.href='notification-message.html'">Next</button>
                 </div>
             </div>
         </main>

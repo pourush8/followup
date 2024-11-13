@@ -94,7 +94,7 @@
                 </div>
                 <div class="tile">
                     <div class="tile-icon"><img src="https://img.icons8.com/color/48/000000/survey.png" alt="One Question Survey"></div>
-                    <div class="tile-name">One Question Survey</div>
+                    <div class="tile-name">Short Survey</div>
                 </div>
                 <div class="tile">
                     <div class="tile-icon"><img src="https://img.icons8.com/color/48/000000/megaphone.png" alt="Announcement"></div>
@@ -300,31 +300,33 @@
                 });
             });
 
-            // Manual Task Popup
+            // Popup functionality
             const defineManualTask = document.getElementById('define-manual-task');
             const popup = document.getElementById('manual-task-popup');
             const closePopup = document.getElementById('close-popup');
             const form = document.getElementById('manual-task-form');
 
-            defineManualTask.addEventListener('click', function() {
-                popup.style.display = 'flex';
-            });
+            if (defineManualTask && popup && closePopup && form) {
+                defineManualTask.addEventListener('click', function() {
+                    popup.style.display = 'flex';
+                });
 
-            closePopup.addEventListener('click', function() {
-                popup.style.display = 'none';
-            });
+                closePopup.addEventListener('click', function() {
+                    popup.style.display = 'none';
+                });
 
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-                const summary = document.getElementById('task-summary').value;
-                const definitionOfDone = document.querySelector('input[name="definition-of-done"]:checked').value;
-                console.log('Task created:', { summary, definitionOfDone });
-                popup.style.display = 'none';
-                form.reset();
-                window.location.href = 'people.html';
-            });
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const summary = document.getElementById('task-summary').value;
+                    const definitionOfDone = document.querySelector('input[name="definition-of-done"]:checked').value;
+                    console.log('Task created:', { summary, definitionOfDone });
+                    popup.style.display = 'none';
+                    form.reset();
+                    window.location.href = 'people.html';
+                });
+            }
 
-            // Google Form Popup
+            // Google Form popup functionality
             const googleFormTile = Array.from(document.querySelectorAll('.tile')).find(tile => 
                 tile.querySelector('.tile-name').textContent === 'Google Form'
             );
@@ -332,23 +334,101 @@
             const closeGoogleFormPopup = document.getElementById('close-google-form-popup');
             const googleFormTaskForm = document.getElementById('google-form-task');
 
-            googleFormTile.addEventListener('click', function() {
-                googleFormPopup.style.display = 'flex';
+            if (googleFormTile && googleFormPopup && closeGoogleFormPopup && googleFormTaskForm) {
+                googleFormTile.addEventListener('click', function() {
+                    googleFormPopup.style.display = 'flex';
+                });
+
+                closeGoogleFormPopup.addEventListener('click', function() {
+                    googleFormPopup.style.display = 'none';
+                });
+
+                googleFormTaskForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const summary = document.getElementById('task-summary').value;
+                    const selectedForm = document.getElementById('google-form-select').value;
+                    console.log('Google Form task created:', { summary, selectedForm });
+                    googleFormPopup.style.display = 'none';
+                    googleFormTaskForm.reset();
+                    window.location.href = 'people.html';
+                });
+            }
+
+            // Add this debug section first
+            console.log('Initializing charts...');
+            const chartElements = document.querySelectorAll('.progress-chart');
+            console.log('Found chart elements:', chartElements.length);
+
+            // Initialize charts
+            const chartData = [
+                { id: 'chart1', progress: 85 },
+                { id: 'chart2', progress: 70 },
+                { id: 'chart3', progress: 45 },
+                { id: 'chart4', progress: 90 },
+                { id: 'chart5', progress: 60 },
+                { id: 'timesheet1', progress: 95 },
+                { id: 'timesheet2', progress: 40 },
+                { id: 'timesheet3', progress: 0 },
+                { id: 'timesheet4', progress: 0 }
+            ];
+
+            chartData.forEach(data => {
+                const chart = document.getElementById(data.id);
+                if (!chart) {
+                    console.log(`Chart element ${data.id} not found`);
+                    return;
+                }
+                
+                console.log(`Initializing chart: ${data.id}`);
+                const ctx = chart.getContext('2d');
+                new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        datasets: [{
+                            data: [data.progress, 100 - data.progress],
+                            backgroundColor: [
+                                '#4CAF50',
+                                '#f0f0f0'
+                            ],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        cutout: '70%',
+                        responsive: false,
+                        maintainAspectRatio: true,
+                        width: 20,
+                        height: 20,
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                enabled: false
+                            }
+                        },
+                        layout: {
+                            padding: 0
+                        },
+                        elements: {
+                            arc: {
+                                borderWidth: 0
+                            }
+                        }
+                    }
+                });
             });
 
-            closeGoogleFormPopup.addEventListener('click', function() {
-                googleFormPopup.style.display = 'none';
-            });
-
-            googleFormTaskForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                const summary = document.getElementById('task-summary').value;
-                const selectedForm = document.getElementById('google-form-select').value;
-                console.log('Google Form task created:', { summary, selectedForm });
-                googleFormPopup.style.display = 'none';
-                googleFormTaskForm.reset();
-                window.location.href = 'people.html';
-            });
+            // Timesheet collapse/expand functionality
+            const timesheetHeader = document.querySelector('.timesheet-header');
+            const timesheetItems = document.querySelector('.timesheet-items');
+            
+            if (timesheetHeader && timesheetItems) {
+                timesheetHeader.addEventListener('click', function() {
+                    this.classList.toggle('open');
+                    timesheetItems.classList.toggle('open');
+                });
+            }
         });
     </script>
 
@@ -399,12 +479,10 @@
                         <option value="">Choose a form</option>
                         <option value="employee-feedback">Employee Feedback Survey</option>
                         <option value="training-evaluation">Training Evaluation Form</option>
-                        <option value="it-support-request">IT Support Request Form</option>
+                        <option value="it-support-request">Manager Feedback Form</option>
                         <option value="expense-report">Expense Report Submission</option>
-                        <option value="leave-request">Leave Request Form</option>
                         <option value="performance-review">Performance Review Self-Assessment</option>
                         <option value="onboarding-checklist">New Employee Onboarding Checklist</option>
-                        <option value="project-status">Project Status Update Form</option>
                     </select>
                 </div>
                 
